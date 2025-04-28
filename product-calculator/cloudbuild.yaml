@@ -1,0 +1,32 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/gke-product-calculator/gke-product-calculator:latest', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/gke-product-calculator/gke-product-calculator:latest']
+  
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+    - 'container'
+    - 'clusters'
+    - 'get-credentials'
+    - 'gke-assignment-cluster'
+    - '--region'
+    - 'us-central1'
+    - '--project'
+    - '$PROJECT_ID'
+  
+  - name: 'gcr.io/cloud-builders/kubectl'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=us-central1'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=gke-assignment-cluster'
+    args:
+    - 'apply'
+    - '-f'
+    - 'k8s/'
+    
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/gke-product-calculator/gke-product-calculator:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
