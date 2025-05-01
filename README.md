@@ -14,7 +14,7 @@ DevKube is a modular, Kubernetes-native project designed to deploy and manage co
 
 ## System Architecture
 
-![DevKube Architecture](./assets/devkube-architecture.png)
+![DevKube Architecture](/assests/devkube-architecture.png)
 
 - **Terraform** provisions the GKE Cluster, node configurations, networking, and persistent storage.
 - **Cloud Build** triggers on GitHub commits, builds Docker images, and pushes them to **Artifact Registry**.
